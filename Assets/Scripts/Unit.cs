@@ -24,7 +24,7 @@ public class Unit : MonoBehaviour
 
     protected List<Action<Unit>> actions = new List<Action<Unit>>();
 
-    private void Awake()
+    protected virtual void Awake()
     {
         Health = maxHealth;
         AttackStrength = initialAttackStrength;
