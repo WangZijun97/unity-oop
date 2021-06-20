@@ -1,20 +1,24 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
-    public GameManager Instance
-    { get; private set; }
+    [SerializeField] private Button actionButton;
+    [SerializeField] private Dropdown actionDropdown;
 
-    private void Awake()
+    [SerializeField] private Player player;
+    [SerializeField] private Unit target;
+
+    private void Start()
     {
-        if (Instance)
-        {
-            return;
-        }
+        player = GameObject.FindObjectOfType<Player>();
+        actionButton.onClick.AddListener(ActionButtonHandler);
+    }
 
-        Instance = this;
-        DontDestroyOnLoad(gameObject);
+    public void ActionButtonHandler()
+    {
+        typeof(Player).GetMethod(actionDropdown.captionText.text).Invoke(player, new object[] { target });
     }
 }
