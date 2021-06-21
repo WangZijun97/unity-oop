@@ -31,7 +31,7 @@ public class UserControl : MonoBehaviour
             var unit = hit.collider.GetComponentInParent<Unit>();
             if (unit)
             {
-                gameManager.target = unit;
+                gameManager.Target = unit;
             }
         }
     }

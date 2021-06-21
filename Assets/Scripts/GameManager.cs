@@ -10,15 +10,29 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Button actionButton;
     [SerializeField] private Dropdown actionDropdown;
     [SerializeField] private GameObject playerDeathScreen;
+    [SerializeField] private Text targetNameText;
+    [SerializeField] private Text targetHPText;
 
     [SerializeField] private Player player;
-    [SerializeField] public Unit target;
+    [SerializeField] private Unit target;
+    public Unit Target
+    {
+        get { return target; }
+        set
+        {
+            target = value;
+            targetNameText.text = $"Target: {target.name}";
+            targetHPText.text = $"HP: {target.Health} / {target.MaxHealth}";
+        }
+    }
 
     private List<Unit> allUnits;
     [SerializeField] private List<Unit> allUnitsInTurnOrder;
     [SerializeField] public Unit unitOnAction;
 
     private bool isGameRunning;
+    public float TurnTimer
+    { get; private set; }
 
     private void Start()
     {
@@ -28,11 +42,17 @@ public class GameManager : MonoBehaviour
         allUnits.AddRange(GameObject.FindObjectsOfType<Unit>());
 
         isGameRunning = true;
+        TurnTimer = 1.5f;
 
         // Randomize turn order
         allUnitsInTurnOrder = new List<Unit>(allUnits.OrderBy(unit => Random.Range(0f, 1f)));
         unitOnAction = allUnitsInTurnOrder[0];
         unitOnAction.TurnStart();
+    }
+
+    private void Update()
+    {
+        UpdateTargetText();
     }
 
     // starts the next turn after a turn ends
@@ -62,7 +82,7 @@ public class GameManager : MonoBehaviour
 
     public void ActionButtonHandler()
     {
-        typeof(Player).GetMethod(actionDropdown.captionText.text).Invoke(player, new object[] { target });
+        typeof(Player).GetMethod(actionDropdown.captionText.text).Invoke(player, new object[] { Target });
     }
 
     public void PlayerDies()
@@ -74,5 +94,18 @@ public class GameManager : MonoBehaviour
     public void NewGame()
     {
         SceneManager.LoadScene("Game");
+    }
+
+    private void UpdateTargetText()
+    {
+        if (!target)
+        {
+            targetNameText.text = $"No target selected";
+            targetHPText.text = "";
+            return;
+        }
+
+        targetNameText.text = $"Target: {target.name}";
+        targetHPText.text = $"HP: {target.Health} / {target.MaxHealth}";
     }
 }

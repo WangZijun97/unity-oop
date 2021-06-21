@@ -6,16 +6,28 @@ using UnityEngine;
 public class Unit : MonoBehaviour
 {
     [SerializeField] protected int maxHealth = 10;
+    public virtual int MaxHealth
+    {
+        get { return maxHealth; }
+        set
+        {
+            maxHealth = value < 0 ? 0 : value;
+        }
+    }
     [SerializeField] protected int health;
-    public int Health
+    public virtual int Health
     {
         get { return health; }
-        set { health = value; }
+        set
+        {
+            health = value < 0 ? 0 : 
+                value > maxHealth ? maxHealth : value;
+        }
     }
 
     [SerializeField] protected int initialAttackStrength = 2;
     [SerializeField] protected int attackStrength;
-    public int AttackStrength
+    public virtual int AttackStrength
     {
         get { return attackStrength; }
         set { attackStrength = value; }
@@ -44,7 +56,7 @@ public class Unit : MonoBehaviour
         IEnumerator TurnEndCoroutine()
         {
             Debug.Log($"{name} turn end");
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(gameManager.TurnTimer);
             gameManager.TurnEndHandler(this);
         }
 
@@ -65,6 +77,7 @@ public class Unit : MonoBehaviour
     // Modify for armor/resistance like effects
     public virtual int GetHit(int damage)
     {
+        Debug.Log($"{name} got hit for {damage} dmg");
         Health -= damage;
         if (Health < 1)
         {

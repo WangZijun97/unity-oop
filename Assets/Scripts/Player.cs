@@ -10,6 +10,27 @@ public class Player : Unit
     [SerializeField] private GameObject playerTurnUI;
     [SerializeField] private GameObject notPlayerTurnUI;
     [SerializeField] private Dropdown actionField;
+    [SerializeField] private Text playerHPText;
+
+    public override int MaxHealth
+    {
+        get { return base.MaxHealth; }
+        set
+        {
+            base.MaxHealth = value;
+            UpdateHealthText();
+        }
+    }
+
+    public override int Health
+    {
+        get { return base.Health; }
+        set
+        {
+            base.Health = value;
+            UpdateHealthText();
+        }
+    }
 
     protected override void Awake()
     {
@@ -40,12 +61,19 @@ public class Player : Unit
 
     public void Heal(Unit target)
     {
+        Debug.Log($"{name} healed {target.name} for 5hp");
         target.Health += 5;
+        TurnEnd();
     }
 
     public override bool Die()
     {
         gameManager.PlayerDies();
         return base.Die();
+    }
+
+    protected void UpdateHealthText()
+    {
+        playerHPText.text = $"Your HP: {health} / {maxHealth}";
     }
 }
