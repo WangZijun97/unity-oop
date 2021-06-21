@@ -11,6 +11,7 @@ public class Player : Unit
     [SerializeField] private GameObject notPlayerTurnUI;
     [SerializeField] private Dropdown actionField;
     [SerializeField] private Text playerHPText;
+    [SerializeField] private Text playerAtkText;
 
     public override int MaxHealth
     {
@@ -29,6 +30,16 @@ public class Player : Unit
         {
             base.Health = value;
             UpdateHealthText();
+        }
+    }
+
+    public override int AttackStrength
+    {
+        get => base.AttackStrength;
+        set
+        {
+            base.AttackStrength = value;
+            UpdateAttackStrengthText();
         }
     }
 
@@ -75,5 +86,10 @@ public class Player : Unit
     protected void UpdateHealthText()
     {
         playerHPText.text = $"Your HP: {health} / {maxHealth}";
+    }
+
+    protected void UpdateAttackStrengthText()
+    { 
+        playerAtkText.text = $"Attack: {attackStrength}"; 
     }
 }
