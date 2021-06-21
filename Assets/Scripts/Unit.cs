@@ -49,6 +49,7 @@ public class Unit : MonoBehaviour
     // Modify to change basic attack
     public virtual void Attack(Unit target)
     {
+        Debug.Log($"{name} attacked {target.name}");
         target.GetHit(AttackStrength);
         TurnEnd();
     }

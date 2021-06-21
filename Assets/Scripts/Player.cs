@@ -26,7 +26,7 @@ public class Player : Unit
 
     public override void TurnStart()
     {
-        Debug.Log($"Player: {name} turn start");
+        Debug.Log($"[Player] {name} turn start");
         playerTurnUI.SetActive(true);
         notPlayerTurnUI.SetActive(false);
     }
