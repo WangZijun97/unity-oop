@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class Unit : MonoBehaviour
 {
+    // ENCAPSULATION
     [SerializeField] protected int maxHealth = 10;
     public virtual int MaxHealth
     {
@@ -14,6 +15,8 @@ public class Unit : MonoBehaviour
             maxHealth = value < 0 ? 0 : value;
         }
     }
+
+    // ENCAPSULATION
     [SerializeField] protected int health;
     public virtual int Health
     {
@@ -26,6 +29,8 @@ public class Unit : MonoBehaviour
     }
 
     [SerializeField] protected int initialAttackStrength = 2;
+
+    // ENCAPSULATION
     [SerializeField] protected int attackStrength;
     public virtual int AttackStrength
     {

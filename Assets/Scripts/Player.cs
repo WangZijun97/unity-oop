@@ -5,6 +5,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
+// INHERITANCE
 public class Player : Unit
 {
     [SerializeField] private GameObject playerTurnUI;
@@ -13,6 +14,7 @@ public class Player : Unit
     [SerializeField] private Text playerHPText;
     [SerializeField] private Text playerAtkText;
 
+    // POLYMORPHISM (only indicated in this file, too many examples in code)
     public override int MaxHealth
     {
         get { return base.MaxHealth; }
@@ -23,6 +25,7 @@ public class Player : Unit
         }
     }
 
+    // POLYMORPHISM
     public override int Health
     {
         get { return base.Health; }
@@ -33,6 +36,7 @@ public class Player : Unit
         }
     }
 
+    // POLYMORPHISM
     public override int AttackStrength
     {
         get => base.AttackStrength;
@@ -43,6 +47,7 @@ public class Player : Unit
         }
     }
 
+    // POLYMORPHISM
     protected override void Awake()
     {
         maxHealth = 30;
@@ -57,6 +62,8 @@ public class Player : Unit
             actions.Select<Action<Unit>, string>(action => action.Method.Name)));
     }
 
+    // POLYMORPHISM
+    // ABSTRACTION (also only indicated in this file, too many examples)
     public override void TurnStart()
     {
         Debug.Log($"[Player] {name} turn start");
@@ -64,6 +71,8 @@ public class Player : Unit
         notPlayerTurnUI.SetActive(false);
     }
 
+    // POLYMORPHISM
+    // ABSTRACTION
     public override void TurnEnd()
     {
         base.TurnEnd();
@@ -81,17 +90,20 @@ public class Player : Unit
         TurnEnd();
     }
 
+    // POLYMORPHISM
     public override bool Die()
     {
         gameManager.PlayerDies();
         return base.Die();
     }
 
+    // ABSTRACTION
     protected void UpdateHealthText()
     {
         playerHPText.text = $"Your HP: {health} / {maxHealth}";
     }
 
+    // ABSTRACTION
     protected void UpdateAttackStrengthText()
     { 
         playerAtkText.text = $"Attack: {attackStrength}"; 
