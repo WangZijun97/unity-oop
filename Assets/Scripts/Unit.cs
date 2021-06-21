@@ -23,7 +23,7 @@ public class Unit : MonoBehaviour
 
     protected List<Action<Unit>> actions = new List<Action<Unit>>();
 
-    private GameManager gameManager;
+    protected GameManager gameManager;
 
     protected virtual void Awake()
     {
@@ -41,8 +41,15 @@ public class Unit : MonoBehaviour
 
     public virtual void TurnEnd()
     {
-        Debug.Log($"{name} turn end");
-        gameManager.TurnEndHandler(this);
+        IEnumerator TurnEndCoroutine()
+        {
+            Debug.Log($"{name} turn end");
+            yield return new WaitForSeconds(0.5f);
+            gameManager.TurnEndHandler(this);
+        }
+
+        StartCoroutine(TurnEndCoroutine());
+        
     }
 
     // Represents a unit's basic attack
@@ -71,8 +78,8 @@ public class Unit : MonoBehaviour
     public virtual bool Die()
     {
         Destroy(gameObject);
-        TurnEnd();
         gameManager.UnitDies(this);
+        TurnEnd();
         return true;
     }
 }

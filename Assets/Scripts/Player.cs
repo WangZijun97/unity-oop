@@ -42,4 +42,10 @@ public class Player : Unit
     {
         target.Health += 5;
     }
+
+    public override bool Die()
+    {
+        gameManager.PlayerDies();
+        return base.Die();
+    }
 }
