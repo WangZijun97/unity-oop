@@ -34,7 +34,7 @@ public class Player : Unit
 
     protected override void Awake()
     {
-        maxHealth = 20;
+        maxHealth = 30;
         initialAttackStrength = 5;
         actions.Add(Heal);
         base.Awake();

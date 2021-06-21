@@ -82,7 +82,14 @@ public class GameManager : MonoBehaviour
 
     public void ActionButtonHandler()
     {
-        typeof(Player).GetMethod(actionDropdown.captionText.text).Invoke(player, new object[] { Target });
+        if (!Target)
+        {
+            Debug.Log("Please select a target");
+            return;
+        }
+
+        typeof(Player).GetMethod(actionDropdown.captionText.text)
+            .Invoke(player, new object[] { Target });
     }
 
     public void PlayerDies()
