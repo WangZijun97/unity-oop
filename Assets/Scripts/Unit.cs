@@ -15,7 +15,6 @@ public class Unit : MonoBehaviour
 
     [SerializeField] protected int initialAttackStrength = 2;
     [SerializeField] protected int attackStrength;
-    [SerializeField]
     public int AttackStrength
     {
         get { return attackStrength; }
@@ -24,11 +23,26 @@ public class Unit : MonoBehaviour
 
     protected List<Action<Unit>> actions = new List<Action<Unit>>();
 
+    private GameManager gameManager;
+
     protected virtual void Awake()
     {
         Health = maxHealth;
         AttackStrength = initialAttackStrength;
         actions.Add(Attack);
+        gameManager = GameObject.FindObjectOfType<GameManager>();
+    }
+
+    public virtual void TurnStart()
+    {
+        Debug.Log($"{name} turn start");
+        TurnEnd();
+    }
+
+    public virtual void TurnEnd()
+    {
+        Debug.Log($"{name} turn end");
+        gameManager.TurnEndHandler(this);
     }
 
     // Represents a unit's basic attack
@@ -36,6 +50,7 @@ public class Unit : MonoBehaviour
     public virtual void Attack(Unit target)
     {
         target.GetHit(AttackStrength);
+        TurnEnd();
     }
 
     // Represents a unit getting hit
@@ -43,6 +58,20 @@ public class Unit : MonoBehaviour
     public virtual int GetHit(int damage)
     {
         Health -= damage;
+        if (Health < 1)
+        {
+            Die();
+        }
         return damage;
+    }
+
+    // Represents death
+    // Modify for guardian angel effects
+    public virtual bool Die()
+    {
+        Destroy(gameObject);
+        TurnEnd();
+        gameManager.UnitDies(this);
+        return true;
     }
 }

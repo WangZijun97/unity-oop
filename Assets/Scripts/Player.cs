@@ -7,6 +7,8 @@ using UnityEngine.UI;
 
 public class Player : Unit
 {
+    [SerializeField] private GameObject playerTurnUI;
+    [SerializeField] private GameObject notPlayerTurnUI;
     [SerializeField] private Dropdown actionField;
 
     protected override void Awake()
@@ -20,6 +22,20 @@ public class Player : Unit
     private void Start()
     {
         actionField.AddOptions(new List<string>(actions.Select<Action<Unit>, string>(action => action.Method.Name)));
+    }
+
+    public override void TurnStart()
+    {
+        Debug.Log($"Player: {name} turn start");
+        playerTurnUI.SetActive(true);
+        notPlayerTurnUI.SetActive(false);
+    }
+
+    public override void TurnEnd()
+    {
+        base.TurnEnd();
+        playerTurnUI.SetActive(false);
+        notPlayerTurnUI.SetActive(true);
     }
 
     public void Heal(Unit target)
