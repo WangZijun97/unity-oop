@@ -10,8 +10,10 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Button actionButton;
     [SerializeField] private Dropdown actionDropdown;
     [SerializeField] private GameObject playerDeathScreen;
+    [SerializeField] private GameObject playerVictoryScreen;
     [SerializeField] private Text targetNameText;
     [SerializeField] private Text targetHPText;
+    [SerializeField] private Text turnActionText;
 
     [SerializeField] private Player player;
     [SerializeField] private Unit target;
@@ -78,6 +80,11 @@ public class GameManager : MonoBehaviour
         }
         
         allUnitsInTurnOrder.Remove(unit);
+        if (!allUnitsInTurnOrder.Exists(unit => unit as Enemy))
+        {
+            isGameRunning = false;
+            playerVictoryScreen.SetActive(true);
+        }
     }
 
     public void ActionButtonHandler()
@@ -85,11 +92,22 @@ public class GameManager : MonoBehaviour
         if (!Target)
         {
             Debug.Log("Please select a target");
+            DisplayActionText("Please select a target");
             return;
         }
 
         typeof(Player).GetMethod(actionDropdown.captionText.text)
             .Invoke(player, new object[] { Target });
+    }
+
+    public void DisplayActionText(string toDisplay)
+    {
+        turnActionText.text = toDisplay;
+    }
+
+    public void DisplayAdditionalActionText(string toAdd)
+    {
+        DisplayActionText(turnActionText.text + "\n" + toAdd);
     }
 
     public void PlayerDies()

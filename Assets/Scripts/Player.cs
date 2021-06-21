@@ -53,7 +53,8 @@ public class Player : Unit
 
     private void Start()
     {
-        actionField.AddOptions(new List<string>(actions.Select<Action<Unit>, string>(action => action.Method.Name)));
+        actionField.AddOptions(new List<string>(
+            actions.Select<Action<Unit>, string>(action => action.Method.Name)));
     }
 
     public override void TurnStart()
@@ -72,7 +73,10 @@ public class Player : Unit
 
     public void Heal(Unit target)
     {
-        Debug.Log($"{name} healed {target.name} for 5hp");
+        string infoString = $"{name} healed {target.name} for 5hp";
+        Debug.Log(infoString);
+        gameManager.DisplayActionText(infoString);
+
         target.Health += 5;
         TurnEnd();
     }

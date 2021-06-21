@@ -14,7 +14,11 @@ public class MagicalFox : Enemy
 
     public void Chill(Unit target)
     {
-        Debug.Log($"{name} chilled {target.name}, {target.name} loses 1 attack strength");
+        string infoString = $"{name} chilled {target.name}, " +
+            $"{target.name} loses 1 attack strength";
+        Debug.Log(infoString);
+        gameManager.DisplayActionText(infoString);
+
         target.AttackStrength -= 1;
         target.GetHit(Mathf.RoundToInt(AttackStrength / 2.0f));
         TurnEnd();

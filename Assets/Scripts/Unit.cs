@@ -30,7 +30,7 @@ public class Unit : MonoBehaviour
     public virtual int AttackStrength
     {
         get { return attackStrength; }
-        set { attackStrength = value; }
+        set { attackStrength = value < 1 ? 1 : value; }
     }
 
     protected List<Action<Unit>> actions = new List<Action<Unit>>();
@@ -68,7 +68,10 @@ public class Unit : MonoBehaviour
     // Modify to change basic attack
     public virtual void Attack(Unit target)
     {
-        Debug.Log($"{name} attacked {target.name}");
+        string infoString = $"{name} attacked {target.name}";
+        Debug.Log(infoString);
+        gameManager.DisplayActionText(infoString);
+
         target.GetHit(AttackStrength);
         TurnEnd();
     }
@@ -77,7 +80,10 @@ public class Unit : MonoBehaviour
     // Modify for armor/resistance like effects
     public virtual int GetHit(int damage)
     {
-        Debug.Log($"{name} got hit for {damage} dmg");
+        string infoString = $"{name} got hit for {damage} dmg";
+        Debug.Log(infoString);
+        gameManager.DisplayAdditionalActionText(infoString);
+
         Health -= damage;
         if (Health < 1)
         {

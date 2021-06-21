@@ -16,7 +16,10 @@ public class NimbleDog : Enemy
         int nimbleDmg = damage;
         if (Random.Range(0f, 1f) > 0.6f)
         {
-            Debug.Log($"{name} dodged some damage!");
+            string infoString = $"{name} dodged some damage!";
+            Debug.Log(infoString);
+            gameManager.DisplayAdditionalActionText(infoString);
+
             nimbleDmg -= 3;
         }
         nimbleDmg = nimbleDmg < 0 ? 0 : nimbleDmg;
